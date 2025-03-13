@@ -1,4 +1,4 @@
-# My MERN App
+# Adlite AI
 
 This project is a full-stack MERN (MongoDB, Express, React, Node.js) application. It consists of a backend server built with Express and a frontend client built with React.
 
