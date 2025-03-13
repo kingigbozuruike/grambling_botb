@@ -39,7 +39,7 @@ my-mern-app
 1. Clone the repository:
    ```
    git clone https://github.com/yourusername/my-mern-app.git
-   cd my-mern-app
+   cd Ad lite
    ```
 
 2. Install backend dependencies:
