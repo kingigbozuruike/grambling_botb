@@ -1,0 +1,54 @@
+metrics-1\src\index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Filtering Visualization</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Data Filtering Visualization</h1>
+        
+        <div class="visualization">
+            <div class="data-section">
+                <h2>Before Filtering</h2>
+                <div class="data-container" id="beforeFilter">
+                    <div class="data-metrics">
+                        <h3>Total tracked parameters: <span id="beforeKeys">0</span></h3>
+                        <h3>Data Size: <span id="beforeSize">0</span> KB</h3>
+                    </div>
+                    <pre id="beforeData"></pre>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h2>After Filtering</h2>
+                <div class="data-container" id="afterFilter">
+                    <div class="data-metrics">
+                        <h3>Total tracked parameters: <span id="afterKeys">0</span></h3>
+                        <h3>Data Size: <span id="afterSize">0</span> KB</h3>
+                    </div>
+                    <pre id="afterData"></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-summary">
+            <h2>Data Reduction Metrics</h2>
+            <div class="metric">
+                <h3>Size Reduction:</h3>
+                <p id="sizeReduction">0%</p>
+            </div>
+            <div class="metric">
+                <h3>Keys Removed:</h3>
+                <p id="keysReduced">0</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

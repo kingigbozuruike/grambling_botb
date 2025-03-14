@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Optimization Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #232f3e; /* Amazon dark blue/black */
+        color: #fff;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #37475a; /* Darker grey */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff9900; /* Amazon orange */
+        margin-bottom: 40px;
+    }
+
+    .visualization {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .business-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .metric-card {
+        background: #1a1a1a; /* Very dark grey */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+        color: #ff9900; /* Amazon orange */
+        border: 1px solid #ff990033;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+        border-color: #ff9900;
+    }
+
+    .metric-card i {
+        font-size: 2em;
+        color: #ff9900; /* Amazon orange */
+        margin-bottom: 10px;
+    }
+
+    .metric-card h3 {
+        color: #cccccc; /* Light grey */
+        margin: 10px 0;
+    }
+
+    .comparison-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px auto;
+        width: 100%;
+        max-width: 1000px;
+        background: #1a1a1a;
+        padding: 40px;
+        border-radius: 15px;
+        border: 2px solid #ff990033;
+    }
+
+    .data-box {
+        flex: 1;
+        background: #232f3e;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        color: #ff9900; /* Amazon orange */
+        border: 1px solid #ff990033;
+    }
+
+    .data-box h2 {
+        color: #cccccc;
+    }
+
+    .arrow {
+        font-size: 2em;
+        color: #ff9900; /* Amazon orange */
+        margin: 0 20px;
+    }
+
+    .chart-container {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #1a1a1a;
+        border-radius: 15px;
+        border: 2px solid #ff990033;
+        color: #ff9900; /* Amazon orange */
+    }
+
+    .toggle-details {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background: #ff9900; /* Amazon orange */
+        color: #232f3e;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .technical-details {
+        background: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        border: 1px solid #ff990033;
+    }
+
+    .hidden {
+        display: none;
+    }
+    
+    .bubble-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        margin: 20px 0;
+    }
+
+    .bubble {
+        border-radius: 50%;
+        transition: all 0.5s ease;
+        position: relative;
+        border: 2px solid rgba(255, 153, 0, 0.2);
+    }
+
+    .before .bubble {
+        background: radial-gradient(circle at 30% 30%, #ff9900, #cc7a00);
+    }
+
+    .after .bubble {
+        background: radial-gradient(circle at 30% 30%, #146eb4, #0d4a7f);
+    }
+
+    .parameter-count {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .parameter-count span:first-child {
+        display: block;
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #ff9900;
+    }
+
+    .parameter-label {
+        display: block;
+        color: #cccccc;
+        font-size: 1.1em;
+        margin-top: 5px;
+    }
+    
+    .size-info {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .size-label {
+        display: block;
+        color: #cccccc;
+        font-size: 1.1em;
+        margin-top: 5px;
+    }
+    
+    .performance-metrics {
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 40px auto;
+        border: 2px solid #ff990033;
+        max-width: 1000px;
+    }
+
+    .performance-card {
+        margin-bottom: 30px;
+    }
+
+    .performance-card h3 {
+        color: #cccccc;
+        margin-bottom: 15px;
+    }
+
+    .progress-container {
+        background: #232f3e;
+        height: 40px;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-bar {
+        width: 0%; /* Start at 0% */
+        height: 100%;
+        background: linear-gradient(90deg, #ff9900, #cc7a00);
+        border-radius: 20px;
+        transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth easing */
+        position: relative;
+    }
+
+    .progress-label {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        z-index: 1;
+    }
+
+    .code-comparison {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background: #232f3e;
+        border-radius: 10px;
+    }
+
+    .code-before, .code-after {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .code-before {
+        color: #ff9900;
+    }
+
+    .code-after {
+        color: #01eeff;
+    }
+
+    .code-comparison i {
+        color: #cccccc;
+        margin: 0 20px;
+    }
+    
+    pre {
+        background: #232f3e;
+        padding: 15px;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: pre-wrap;
+        color: #ff9900;
+        overflow-x: auto;
+        max-height: 400px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-chart-line"></i> Data Optimization Dashboard</h1>
+        
+        <div class="business-metrics">
+            <div class="metric-card">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Estimated Cost Savings</h3>
+                <p id="costSavings">calculating...</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>Performance Boost</h3>
+                <p id="perfBoost">calculating...</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-database"></i>
+                <h3>Storage Optimized</h3>
+                <p id="storageOpt">calculating...</p>
+            </div>
+        </div>
+
+        <div class="visualization">
+            <div class="chart-container">
+                <canvas id="reductionChart"></canvas>
+            </div>
+            <div class="comparison-container">
+                <div class="data-box before">
+                    <h2><i class="fas fa-database"></i> Before Optimization</h2>
+                    <div class="bubble-container">
+                        <div class="bubble" id="beforeBubble"></div>
+                        <div class="parameter-count">
+                            <span id="beforeKeys">0</span>
+                            <span class="parameter-label">Parameters</span>
+                        </div>
+                        <div class="size-info">
+                            <span id="beforeSize">0</span> KB
+                            <span class="size-label">Size</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="data-box after">
+                    <h2><i class="fas fa-database"></i> After Optimization</h2>
+                    <div class="bubble-container">
+                        <div class="bubble" id="afterBubble"></div>
+                        <div class="parameter-count">
+                            <span id="afterKeys">0</span>
+                            <span class="parameter-label">Parameters</span>
+                        </div>
+                        <div class="size-info">
+                            <span id="afterSize">0</span> KB
+                            <span class="size-label">Size</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="performance-metrics">
+            <div class="performance-card">
+                <h3>Computation Time <i class="fas fa-info-circle tooltip-trigger" data-tooltip="Based on reduced parameter processing and optimized data structure"></i></h3>
+                <div class="progress-container">
+                    <div class="progress-bar" id="computeProgress">
+                        <span class="progress-label">~70% faster</span>
+                    </div>
+                </div>
+            </div>
+            <div class="performance-card">
+                <h3>Energy Usage <i class="fas fa-info-circle tooltip-trigger" data-tooltip="Based on reduced CPU cycles and memory access patterns"></i></h3>
+                <div class="progress-container">
+                    <div class="progress-bar" id="energyProgress">
+                        <span class="progress-label">~65% less</span>
+                    </div>
+                </div>
+            </div>
+            <div class="performance-card">
+                <h3>Code Size</h3>
+                <div class="code-comparison">
+                    <div class="code-before">600+ lines</div>
+                    <i class="fas fa-arrow-right"></i>
+                    <div class="code-after">~120 lines</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <button class="toggle-details">Show Technical Details</button>
+            <div class="technical-details hidden">
+                <h3>Before Optimization:</h3>
+                <pre id="beforeData"></pre>
+                <h3>After Optimization:</h3>
+                <pre id="afterData"></pre>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
