@@ -20,20 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
         parameterReduction: ((metrics.before.parameters - metrics.after.parameters) / metrics.before.parameters * 100).toFixed(1)
     };
 
-    // Calculate business impacts
-    const monthlyDataTransfers = 100000; // Assuming 100k data transfers per month
-    const costPerGBPerMonth = 0.023; // AWS typical cost per GB
-    const sizeReductionGB = (metrics.before.size - metrics.after.size) / 1024;
-    const monthlySavings = (sizeReductionGB * costPerGBPerMonth * monthlyDataTransfers).toFixed(2);
-
     // Update UI metrics
-    document.getElementById('costSavings').textContent = `$${monthlySavings}/month`;
     document.getElementById('perfBoost').textContent = '70%';
     document.getElementById('storageOpt').textContent = `${calculations.sizeReduction}%`;
 
     // Update parameter counts
     document.getElementById('beforeKeys').textContent = '600+';
-    document.getElementById('afterKeys').textContent = '~120';
+    document.getElementById('afterKeys').textContent = '< 120';
 
     // Update sizes
     document.getElementById('beforeSize').textContent = metrics.before.size;

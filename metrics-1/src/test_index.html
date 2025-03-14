@@ -39,7 +39,7 @@
 
     .business-metrics {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
         margin-bottom: 40px;
     }
@@ -140,7 +140,7 @@
         display: none;
     }
     
-    .bubble-container {
+    .icon-container {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -149,31 +149,27 @@
         margin: 20px 0;
     }
 
-    .bubble {
-        border-radius: 50%;
+    #beforeIcon {
+        font-size: 180px; /* Larger icon */
+        color: #ff9900;
+        text-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
         transition: all 0.5s ease;
-        position: relative;
-        border: 2px solid rgba(255, 153, 0, 0.2);
     }
 
-    .before .bubble {
-        background: radial-gradient(circle at 30% 30%, #ff9900, #cc7a00);
+    #afterIcon {
+        font-size: 120px; /* Smaller but still visible */
+        color: #146eb4;
+        text-shadow: 0 0 20px rgba(20, 110, 180, 0.3);
+        transition: all 0.5s ease;
     }
 
-    .after .bubble {
-        background: radial-gradient(circle at 30% 30%, #146eb4, #0d4a7f);
+    .icon-container:hover .fas {
+        transform: translateY(-5px);
     }
 
     .parameter-count {
-        margin-top: 20px;
+        margin-top: 30px;
         text-align: center;
-    }
-
-    .parameter-count span:first-child {
-        display: block;
-        font-size: 2.5em;
-        font-weight: bold;
-        color: #ff9900;
     }
 
     .parameter-label {
@@ -286,11 +282,6 @@
         
         <div class="business-metrics">
             <div class="metric-card">
-                <i class="fas fa-dollar-sign"></i>
-                <h3>Estimated Cost Savings</h3>
-                <p id="costSavings">calculating...</p>
-            </div>
-            <div class="metric-card">
                 <i class="fas fa-tachometer-alt"></i>
                 <h3>Performance Boost</h3>
                 <p id="perfBoost">calculating...</p>
@@ -309,8 +300,8 @@
             <div class="comparison-container">
                 <div class="data-box before">
                     <h2><i class="fas fa-database"></i> Before Optimization</h2>
-                    <div class="bubble-container">
-                        <div class="bubble" id="beforeBubble"></div>
+                    <div class="icon-container">
+                        <i class="fas fa-database" id="beforeIcon"></i>
                         <div class="parameter-count">
                             <span id="beforeKeys">0</span>
                             <span class="parameter-label">Parameters</span>
@@ -326,8 +317,8 @@
                 </div>
                 <div class="data-box after">
                     <h2><i class="fas fa-database"></i> After Optimization</h2>
-                    <div class="bubble-container">
-                        <div class="bubble" id="afterBubble"></div>
+                    <div class="icon-container">
+                        <i class="fas fa-database" id="afterIcon"></i>
                         <div class="parameter-count">
                             <span id="afterKeys">0</span>
                             <span class="parameter-label">Parameters</span>
@@ -363,7 +354,7 @@
                 <div class="code-comparison">
                     <div class="code-before">600+ lines</div>
                     <i class="fas fa-arrow-right"></i>
-                    <div class="code-after">~120 lines</div>
+                    <div class="code-after"> ~120 lines</div>
                 </div>
             </div>
         </div>
